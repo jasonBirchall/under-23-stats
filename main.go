@@ -19,13 +19,28 @@ var players = []player{
 }
 
 func main() {
+	r := setupRouter()
+	r.Run("localhost:8080")
+}
+
+// setupRouter sets up the router and returns it
+func setupRouter() *gin.Engine {
 	router := gin.Default()
+	router.LoadHTMLGlob("templates/*")
+
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Gin web server",
+		},
+		)
+	})
+
 	router.GET("/players", getPlayers)
 	router.GET("/players/:name", getPlayerByName)
 
 	router.POST("/players", postPlayers)
 
-	router.Run("localhost:8080")
+	return router
 }
 
 // postPlayers adds a new player to the list of players
@@ -40,19 +55,6 @@ func postPlayers(c *gin.Context) {
 	// Add player to players slice
 	players = append(players, player)
 	c.IndentedJSON(http.StatusCreated, player)
-}
-
-// getPlayerByNationality responds with the list of players by nationailty
-func getPlayerByNationality(c *gin.Context) {
-	n := c.Params.ByName("nationality")
-	for _, player := range players {
-		if player.Nationality == n {
-			c.IndentedJSON(http.StatusOK, player)
-			return
-		}
-	}
-
-	c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Nationality not found"})
 }
 
 // getPlayerByName responds with the player with the given name as JSON
