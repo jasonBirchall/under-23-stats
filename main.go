@@ -10,11 +10,29 @@ import (
 type player struct {
 	Name        string `json:"name"`
 	Nationality string `json:"nationality"`
+	Goals       goals  `json:"goals"`
+}
+
+type goals struct {
+	Scored      int `json:"scored"`
+	Headed      int `json:"headed"`
+	Volleyed    int `json:"volleyed"`
+	LeftFooted  int `json:"leftfooted"`
+	RightFooted int `json:"rightfooted"`
+	OwnGoals    int `json:"owngoals"`
 }
 
 // Test data
 var players = []player{
-	{Name: "Emile Smith-Rowe", Nationality: "English"},
+	{
+		Name:        "Emile Smith-Rowe",
+		Nationality: "English",
+		Goals: goals{
+			Scored:   12,
+			Headed:   1,
+			Volleyed: 1,
+		},
+	},
 	{Name: "Bakayo Saka", Nationality: "English"},
 }
 
@@ -30,7 +48,7 @@ func setupRouter() *gin.Engine {
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Gin web server",
+			"title": "Top 100 players under 23",
 		},
 		)
 	})
