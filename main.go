@@ -38,7 +38,7 @@ var players = []player{
 
 func main() {
 	r := setupRouter()
-	r.Run("localhost:8080")
+	r.Run(":8080")
 }
 
 // setupRouter sets up the router and returns it
