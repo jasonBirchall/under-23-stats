@@ -28,5 +28,5 @@ services:
     volumes:
       - ./data:/app/data
     # have to use $$ (double-dollar) so docker doesn't try to substitute a variable
-    # command: reflex -r "\.go$$" -s -- sh -c "go run ./"
-    command: ls -latr
+    command: reflex -r "\.go$$" -s -- sh -c "go run ./"
+    # command: ls -latr
