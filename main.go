@@ -38,7 +38,7 @@ var players = []player{
 
 func main() {
 	r := setupRouter()
-	r.Run(":8080")
+	r.Run("localhost:8080")
 }
 
 // setupRouter sets up the router and returns it
@@ -46,12 +46,7 @@ func setupRouter() *gin.Engine {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Top 100 players under 23",
-		},
-		)
-	})
+	router.GET("/", showIndexPage)
 
 	router.GET("/players", getPlayers)
 	router.GET("/players/:name", getPlayerByName)
@@ -59,6 +54,14 @@ func setupRouter() *gin.Engine {
 	router.POST("/players", postPlayers)
 
 	return router
+}
+
+// showIndexPage sets up the home page for the app
+func showIndexPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"title": "Top 100 players under 23",
+	},
+	)
 }
 
 // postPlayers adds a new player to the list of players
